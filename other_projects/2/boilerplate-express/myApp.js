@@ -7,6 +7,12 @@ app.get("/", (req, res) => {
   res.sendFile(absolutePath1);
 });
 
-app.use("/public", express.static(__dirname + "/public"));
+absolutePath2 = __dirname + "/public";
+
+app.use("/public", express.static(absolutePath2));
+
+app.get("/json", (req, res) => {
+  res.json({ message: "Hello json" });
+});
 
 module.exports = app;
