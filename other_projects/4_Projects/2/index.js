@@ -29,7 +29,7 @@ app.enable("trust proxy");
 app.get("/api/whoami", function (req, res) {
   res.json({
     ipaddress: req.ip,
-    language: req.headers["accept-language"],
+    language: req.headers["accept-language"] ?? "en-US",
     software: req.headers["user-agent"],
   });
 });
