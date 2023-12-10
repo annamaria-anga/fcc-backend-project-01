@@ -1,3 +1,4 @@
+require("dotenv").config();
 let express = require("express");
 let app = express();
 
@@ -17,6 +18,12 @@ app.get("/json", (req, response) => {
   } else {
     response.send("Hello json");
   }
+});
+
+app.use(function middleware(req, res, next) {
+  let message = `${req.method} ${req.path} - ${req.ip}`;
+  console.log(message);
+  next();
 });
 
 module.exports = app;
