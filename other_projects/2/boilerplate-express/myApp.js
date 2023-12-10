@@ -52,6 +52,13 @@ const handler = function (req, res) {
   res.json({ name: `${firstName} ${lastName}` });
 };
 
-app.route("/name").get(handler).post(handler);
+const postHandler = function (req, res) {
+  console.log(req.body);
+  let firstName = req.body.first;
+  let lastName = req.body.last;
+  res.json({ name: `${firstName} ${lastName}` });
+};
+
+app.route("/name").get(handler).post(postHandler);
 
 module.exports = app;
