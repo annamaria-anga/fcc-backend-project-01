@@ -1,5 +1,7 @@
 require("dotenv").config();
 let express = require("express");
+let bodyParser = require("body-parser");
+
 let app = express();
 
 absolutePath1 = __dirname + "/views/index.html";
@@ -41,11 +43,15 @@ app.get("/:word/echo", function (req, res) {
   res.json({ echo: req.params.word });
 });
 
-app.get("/name", function (req, res) {
-  console.log(req);
+app.use(bodyParser.urlencoded({ extended: false }));
+
+const handler = function (req, res) {
+  console.log(req.body);
   let firstName = req.query.first;
   let lastName = req.query.last;
   res.json({ name: `${firstName} ${lastName}` });
-});
+};
+
+app.route("/name").get(handler).post(handler);
 
 module.exports = app;
