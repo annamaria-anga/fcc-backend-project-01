@@ -34,7 +34,9 @@ app.post("/api/users/:_id/exercises", function (req, res) {
   const userIndex = getUserIndex(users, req.params._id);
 
   const currentLog = {
-    date: req.body.date ?? new Date().toISOString().split("T")[0],
+    date: req.body.date
+      ? req.body.date
+      : new Date().toISOString().split("T")[0],
     duration: Number(req.body.duration),
     description: req.body.description,
   };
