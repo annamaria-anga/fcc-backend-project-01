@@ -11,8 +11,12 @@ absolutePath2 = __dirname + "/public";
 
 app.use("/public", express.static(absolutePath2));
 
-app.get("/json", (req, res) => {
-  res.json({ message: "Hello json" });
+app.get("/json", (req, response) => {
+  if (process.env.MESSAGE_STYLE === "uppercase") {
+    response.send("Hello json".toUpperCase());
+  } else {
+    response.send("Hello json");
+  }
 });
 
 module.exports = app;
