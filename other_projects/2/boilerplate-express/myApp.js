@@ -20,10 +20,10 @@ app.get("/json", (req, response) => {
   }
 });
 
-// app.use(function middleware(req, res, next) {
-//   let message = `${req.method} ${req.path} - ${req.ip}`;
-//   console.log(message);
-//   next();
-// });
+app.use(function middleware(req, res, next) {
+  let message = `${req.method} ${req.path} - ${req.ip}`;
+  console.log(message);
+  next();
+});
 
 module.exports = app;
