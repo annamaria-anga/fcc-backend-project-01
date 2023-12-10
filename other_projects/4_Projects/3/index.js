@@ -27,6 +27,7 @@ let urls = [];
 app.post("/api/shorturl", function (req, res) {
   try {
     let url = req.body.url;
+    console.log(url);
     if (validUrl.isUri(url)) {
       urls.push(url);
       res.json({ original_url: url, short_url: urls.length - 1 });
