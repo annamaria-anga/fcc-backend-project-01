@@ -52,7 +52,7 @@ app.get("/api/:date", function (req, res) {
       throw new Error(output);
     }
     res.json({
-      unix: input,
+      unix: date.getTime(),
       utc: date.toUTCString(),
     });
   } catch (error) {
