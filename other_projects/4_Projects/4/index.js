@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 
 let id = 0;
 let users = [];
-let logger = [];
+let logger = {};
 app.post("/api/users", function (req, res) {
   id++;
   users.push({ username: req.body.username, _id: String(id) });
@@ -42,21 +42,30 @@ app.post("/api/users/:_id/exercises", function (req, res) {
     description: req.body.description,
   };
 
-  if (logger.findIndex((user) => user["_id"] == Number(req.params._id)) < 0) {
-    logger.push({
+  if (logger[req.params._id] === undefined) {
+    logger[req.params._id] = {
       _id: req.params._id,
       username: users[userIndex]["username"],
-      log: [currentLog],
-    });
-  } else {
-    logger[userIndex].log.push(currentLog);
+      log: [],
+    };
   }
+
+  logger[req.params._id].log.push(currentLog);
+
+  // if (logger.findIndex((user) => user["_id"] == Number(req.params._id)) < 0) {
+  //   logger.push({
+  //     _id: req.params._id,
+  //     username: users[userIndex]["username"],
+  //     log: [currentLog],
+  //   });
+  // } else {
+  //   logger[userIndex].log.push(currentLog);
+  // }
 
   res.json({
     username: users[userIndex]["username"],
     date: new Date(currentLog.date).toDateString(),
     duration: currentLog.duration,
-    _id: req.params._id,
     description: currentLog.description,
     _id: req.params._id,
   });
@@ -70,7 +79,7 @@ app.get("/api/users/:_id/logs", function (req, res) {
 
   // console.log(JSON.stringify(log));
 
-  let exercises = logger[userLogIndex].log || [];
+  let exercises = logger[req.params._id].log || [];
 
   if (req.query.from) {
     exercises = exercises.filter((ex) => ex.date >= req.query.from);
