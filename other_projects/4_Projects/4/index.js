@@ -31,6 +31,7 @@ function getUserIndex(array, id) {
 }
 
 app.post("/api/users/:_id/exercises", function (req, res) {
+  console.log(req.body);
   const userIndex = getUserIndex(users, req.params._id);
 
   const currentLog = {
