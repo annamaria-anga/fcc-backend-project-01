@@ -70,7 +70,7 @@ app.get("/api/users/:_id/logs", function (req, res) {
 
   // console.log(JSON.stringify(log));
 
-  let exercises = logger[userLogIndex].log;
+  let exercises = logger[userLogIndex].log || [];
 
   if (req.query.from) {
     exercises = exercises.filter((ex) => ex.date >= req.query.from);
