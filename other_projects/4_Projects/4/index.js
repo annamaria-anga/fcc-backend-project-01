@@ -73,9 +73,9 @@ app.post("/api/users/:_id/exercises", function (req, res) {
 
 app.get("/api/users/:_id/logs", function (req, res) {
   const userIndex = getUserIndex(users, req.params._id);
-  const userLogIndex = logger.findIndex(
-    (user) => user["_id"] == Number(req.params._id)
-  );
+  // const userLogIndex = logger.findIndex(
+  //   (user) => user["_id"] == Number(req.params._id)
+  // );
 
   // console.log(JSON.stringify(log));
 
