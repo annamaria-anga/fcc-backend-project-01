@@ -34,17 +34,26 @@ function dateConverter(yyyymmdd) {
 app.get("/api/:date", function (req, res) {
   let input;
 
-  if (req.params.date.toString().includes("-")) {
-    input = Number(dateConverter(req.params.date));
-  } else {
-    input = Number(req.params.date);
-    console.log(input);
+  try {
+    if (req.params.date.toString().includes("-")) {
+      input = Number(dateConverter(req.params.date));
+    } else {
+      input = Number(req.params.date);
+    }
+    const date = new Date(input);
+    const output = date.toUTCString();
+    if (output === "Invalid Date") {
+      throw new Error(output);
+    }
+    res.json({
+      unix: input,
+      utc: date.toUTCString(),
+    });
+  } catch (error) {
+    res.json({
+      error: "Invalid Date",
+    });
   }
-
-  res.json({
-    unix: input,
-    utc: unixConverter(input),
-  });
 });
 
 // listen for requests :)
