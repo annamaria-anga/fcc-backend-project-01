@@ -13,17 +13,23 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
+const defaultDate = () => new Date().toISOString().slice(0, 10);
+
 let id = 0;
-let users = [];
+let users = {};
 let logger = {};
 app.post("/api/users", function (req, res) {
   id++;
-  users.push({ username: req.body.username, _id: String(id) });
-  res.json({ username: req.body.username, _id: id });
+  users[id] = {
+    username: req.body.username,
+    _id: String(id),
+  };
+
+  res.json(users[id]);
 });
 
 app.get("/api/users", function (req, res) {
-  res.json(users);
+  res.json(Object.values(users));
 });
 
 function getUserIndex(array, id) {
@@ -31,26 +37,27 @@ function getUserIndex(array, id) {
 }
 
 app.post("/api/users/:_id/exercises", function (req, res) {
-  console.log(req.body);
-  const userIndex = getUserIndex(users, req.params._id);
-
-  const currentLog = {
-    date: req.body.date
-      ? req.body.date
-      : new Date().toISOString().split("T")[0],
-    duration: Number(req.body.duration),
+  const userId = req.params._id || req.body._id; // userId from URL or from body
+  console.log(users);
+  console.log(userId);
+  const exObj = {
     description: req.body.description,
-  };
+    duration: +req.body.duration,
+    date: req.body.date || defaultDate(),
+  }; // exrecise object to add
 
-  if (logger[req.params._id] === undefined) {
-    logger[req.params._id] = {
-      _id: req.params._id,
-      username: users[userIndex]["username"],
+  console.log(req.body);
+  const user = users[userId];
+
+  if (logger[userId] === undefined) {
+    logger[userId] = {
+      _id: userId,
+      username: user["username"],
       log: [],
     };
   }
 
-  logger[req.params._id].log.push(currentLog);
+  logger[userId].log.push(exObj);
 
   // if (logger.findIndex((user) => user["_id"] == Number(req.params._id)) < 0) {
   //   logger.push({
@@ -63,16 +70,17 @@ app.post("/api/users/:_id/exercises", function (req, res) {
   // }
 
   res.json({
-    username: users[userIndex]["username"],
-    description: currentLog.description,
-    duration: currentLog.duration,
-    _id: req.params._id,
-    date: new Date(currentLog.date).toDateString(),
+    username: user["username"],
+    description: exObj.description,
+    duration: exObj.duration,
+    _id: userId,
+    date: new Date(exObj.date).toDateString(),
   });
 });
 
 app.get("/api/users/:_id/logs", function (req, res) {
-  const userIndex = getUserIndex(users, req.params._id);
+  const userId = req.params._id;
+  // const userIndex = getUserIndex(users, req.params._id);
   // const userLogIndex = logger.findIndex(
   //   (user) => user["_id"] == Number(req.params._id)
   // );
@@ -96,7 +104,7 @@ app.get("/api/users/:_id/logs", function (req, res) {
   res.json({
     _id: req.params._id,
     count: exercises.length,
-    username: users[userIndex]["username"],
+    username: users[userId]["username"],
     log: exercises.map((_ex) => {
       ex = {
         ..._ex,
