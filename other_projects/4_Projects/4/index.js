@@ -88,7 +88,6 @@ app.get("/api/users/:_id/logs", function (req, res) {
   // console.log(JSON.stringify(log));
 
   let exercises = logger[req.params._id].log || [];
-  let additionalField = "";
 
   const response = {
     _id: req.params._id,
@@ -110,9 +109,8 @@ app.get("/api/users/:_id/logs", function (req, res) {
   }
 
   if (req.query.to) {
-    additionalField = new Date(req.query.from).toDateString();
     exercises = exercises.filter((ex) => ex.date <= req.query.to);
-    response.to = new Date(req.query.from).toDateString();
+    response.to = new Date(req.query.to).toDateString();
   }
 
   if (req.query.limit) {
