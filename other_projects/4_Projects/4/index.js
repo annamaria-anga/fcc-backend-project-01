@@ -68,7 +68,7 @@ app.get("/api/users/:_id/logs", function (req, res) {
     (user) => user["_id"] == Number(req.params._id)
   );
 
-  console.log(JSON.stringify(log));
+  // console.log(JSON.stringify(log));
 
   let exercises = logger[userLogIndex].log;
 
