@@ -88,20 +88,9 @@ app.get("/api/users/:_id/logs", function (req, res) {
   // console.log(JSON.stringify(log));
 
   let exercises = logger[req.params._id].log || [];
+  let additionalField = "";
 
-  if (req.query.from) {
-    exercises = exercises.filter((ex) => ex.date >= req.query.from);
-  }
-
-  if (req.query.to) {
-    exercises = exercises.filter((ex) => ex.date <= req.query.to);
-  }
-
-  if (req.query.limit) {
-    exercises = exercises.slice(req.query.limit);
-  }
-
-  res.json({
+  const response = {
     _id: req.params._id,
     count: exercises.length,
     username: users[userId]["username"],
@@ -113,7 +102,38 @@ app.get("/api/users/:_id/logs", function (req, res) {
 
       return ex;
     }),
-  });
+  };
+
+  if (req.query.from) {
+    exercises = exercises.filter((ex) => ex.date >= req.query.from);
+    response.from = new Date(req.query.from).toDateString();
+  }
+
+  if (req.query.to) {
+    additionalField = new Date(req.query.from).toDateString();
+    exercises = exercises.filter((ex) => ex.date <= req.query.to);
+    response.to = new Date(req.query.from).toDateString();
+  }
+
+  if (req.query.limit) {
+    exercises = exercises.slice(req.query.limit);
+  }
+
+  // const response = {
+  //   _id: req.params._id,
+  //   count: exercises.length,
+  //   username: users[userId]["username"],
+  //   log: exercises.map((_ex) => {
+  //     ex = {
+  //       ..._ex,
+  //     };
+  //     ex.date = new Date(ex.date).toDateString();
+
+  //     return ex;
+  //   }),
+  // };
+
+  res.json(response);
 });
 
 const listener = app.listen(process.env.PORT || 80, () => {
