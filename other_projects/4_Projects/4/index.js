@@ -55,6 +55,7 @@ app.post("/api/users/:_id/exercises", function (req, res) {
     username: users[userIndex]["username"],
     date: new Date(currentLog.date).toDateString(),
     duration: currentLog.duration,
+    _id: req.params._id,
     description: currentLog.description,
     _id: req.params._id,
   });
