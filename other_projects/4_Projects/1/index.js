@@ -33,20 +33,25 @@ function dateConverter(yyyymmdd) {
 
 app.get("/api/:date", function (req, res) {
   let input;
-  console.log("input", req.params.date);
+  let date;
 
   try {
-    if (Number(req.params.date) == req.params.date) {
-      input = Number(req.params.date);
+    if (!req.params.date) {
+      date = new Date();
     } else {
-      input = String(req.params.date);
+      if (Number(req.params.date) == req.params.date) {
+        input = Number(req.params.date);
+      } else {
+        input = String(req.params.date);
+      }
+
+      date = new Date(input);
     }
     // if (req.params.date.toString().includes("-")) {
     //   input = Number(dateConverter(req.params.date));
     // } else {
     //   input = Number(req.params.date);
     // }
-    const date = new Date(input);
     const output = date.toUTCString();
     if (output === "Invalid Date") {
       throw new Error(output);
