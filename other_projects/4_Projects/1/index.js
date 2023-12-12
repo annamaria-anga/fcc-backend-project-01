@@ -35,11 +35,16 @@ app.get("/api/:date", function (req, res) {
   let input;
 
   try {
-    if (req.params.date.toString().includes("-")) {
-      input = Number(dateConverter(req.params.date));
-    } else {
+    if (Number(req.params.date) == req.params.date) {
       input = Number(req.params.date);
+    } else {
+      input = String(req.params.date);
     }
+    // if (req.params.date.toString().includes("-")) {
+    //   input = Number(dateConverter(req.params.date));
+    // } else {
+    //   input = Number(req.params.date);
+    // }
     const date = new Date(input);
     const output = date.toUTCString();
     if (output === "Invalid Date") {
