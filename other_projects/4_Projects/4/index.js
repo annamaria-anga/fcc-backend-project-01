@@ -63,12 +63,11 @@ app.post("/api/users/:_id/exercises", function (req, res) {
   // }
 
   res.json({
-    _id: req.params._id,
     username: users[userIndex]["username"],
-    // date: new Date(currentLog.date).toDateString(),
-    date: currentLog.date,
-    duration: currentLog.duration,
     description: currentLog.description,
+    duration: currentLog.duration,
+    _id: req.params._id,
+    date: new Date(currentLog.date).toDateString(),
   });
 });
 
