@@ -33,6 +33,7 @@ function dateConverter(yyyymmdd) {
 
 app.get("/api/:date", function (req, res) {
   let input;
+  console.log("input", req.params.date);
 
   try {
     if (Number(req.params.date) == req.params.date) {
