@@ -23,14 +23,6 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-function unixConverter(unixDate) {
-  return new Date(unixDate).toUTCString();
-}
-
-function dateConverter(yyyymmdd) {
-  return new Date(yyyymmdd).getTime();
-}
-
 const handler = function (req, res) {
   let input;
   let date;
@@ -47,18 +39,13 @@ const handler = function (req, res) {
 
       date = new Date(input);
     }
-    // if (req.params.date.toString().includes("-")) {
-    //   input = Number(dateConverter(req.params.date));
-    // } else {
-    //   input = Number(req.params.date);
-    // }
     const output = date.toUTCString();
     if (output === "Invalid Date") {
       throw new Error(output);
     }
     res.json({
       unix: date.getTime(),
-      utc: date.toUTCString(),
+      utc: output,
     });
   } catch (error) {
     res.json({
