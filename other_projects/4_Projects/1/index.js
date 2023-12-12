@@ -31,7 +31,7 @@ function dateConverter(yyyymmdd) {
   return new Date(yyyymmdd).getTime();
 }
 
-app.get("/api/:date", function (req, res) {
+const handler = function (req, res) {
   let input;
   let date;
 
@@ -65,7 +65,10 @@ app.get("/api/:date", function (req, res) {
       error: "Invalid Date",
     });
   }
-});
+};
+
+app.get("/api/:date", handler);
+app.get("/api", handler);
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 80, function () {
