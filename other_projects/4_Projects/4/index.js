@@ -18,7 +18,7 @@ let users = [];
 let log = [];
 app.post("/api/users", function (req, res) {
   id++;
-  users.push({ username: req.body.username, _id: id });
+  users.push({ username: req.body.username, _id: String(id) });
   res.json({ username: req.body.username, _id: id });
 });
 
