@@ -100,8 +100,8 @@ app.get("/api/users/:_id/logs", function (req, res) {
     exercises = exercises.filter((ex) => ex.date <= req.query.to);
   }
 
-  if (req.query.limit) {
-    exercises = exercises.slice(req.query.limit);
+  if (Number(req.query.limit) > 0) {
+    exercises = exercises.slice(0, req.query.limit);
   }
 
   const response = {
